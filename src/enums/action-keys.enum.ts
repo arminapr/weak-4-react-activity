@@ -3,5 +3,6 @@ export enum ActionKeys {
   CLEAR = 'C',
   EQUALS = '=',
   DOT = '•',
-  SIGN_FLIP = '±'
+  SIGN_FLIP = '±',
+  SQRT = "SQRT"
 }

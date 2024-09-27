@@ -9,15 +9,47 @@ export default function Calculator() {
   const [display, setDisplay] = useState("0");
 
   function numericKeyPressHandler(key: NumericKeys): void {
-    setDisplay(key);
+    if (display === "0" || display === "Error") {
+      setDisplay(String(key));
+    } else {
+      setDisplay(`${display}${key}`);
+    }
   }
 
   function operatorKeyPressHandler(key: OperatorKeys): void {
-    setDisplay(key);
+    setDisplay(
+      display === "Error" || display === "0" || display === "."
+        ? String(key)
+        : `${display}${key}`
+    );
   }
 
   function actionKeyPressHandler(key: ActionKeys): void {
-    setDisplay(key);
+    switch (key) {
+      case ActionKeys.CLEAR:
+        setDisplay("0");
+        break;
+      case ActionKeys.SIGN_FLIP:
+        setDisplay(display.startsWith('-') ? display.slice(1) : `-${display}`);
+        break;
+      case ActionKeys.SQRT:
+        const num = parseFloat(display);
+        if (num >= 0) {
+          setDisplay(Math.sqrt(num).toString());
+        } else {
+          setDisplay("Error");
+        }
+        break;
+      case ActionKeys.EQUALS:
+        try {
+          setDisplay(eval(display).toString());
+        } catch (error) {
+          setDisplay("Error");
+        }
+        break;
+      default:
+        dummy(key);
+    }
   }
 
   function dummy(key: NumericKeys | OperatorKeys | ActionKeys): void {
